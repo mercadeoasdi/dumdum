@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Dum Dum</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(circle at top,#ff7e5f,#0f0c29);color:white;font-family:Arial Black,Arial,sans-serif;height:100vh;width:100vw;display:flex;justify-content:center;align-items:center;text-align:center;overflow:hidden}
+#slide{font-size:9vw;line-height:1.2;padding:6vw;font-weight:900;text-shadow:0 4px 20px rgba(0,0,0,.6);transition:transform .4s,opacity .4s}
+#start{position:fixed;inset:0;background:black;display:flex;justify-content:center;align-items:center;flex-direction:column;z-index:10}
+#start button{background:#ff7e5f;color:white;border:none;padding:18px 35px;border-radius:50px;font-size:1.3rem;font-weight:bold;margin-top:20px;cursor:pointer}
+#btn-control{position:fixed;bottom:25px;right:25px;background:rgba(255,255,255,.2);backdrop-filter:blur(5px);border:2px solid white;color:white;padding:12px 24px;border-radius:30px;font-size:1rem;font-family:sans-serif;font-weight:bold;cursor:pointer;transition:background .3s;display:none;z-index:5}
+#btn-control:hover{background:rgba(255,126,95,.8)}
+</style>
+</head>
+<body>
+<div id="start" onclick="iniciar(event)">
+<h2 style="font-size:8vw">DUM DUM</h2>
+<p>Salserín</p>
+<button>Toca para iniciar ▶</button>
+<p style="opacity:.6;font-size:.9rem;margin-top:15px">Un verso cada 2 segundos</p>
+</div>
+<div id="slide"></div>
+<button id="btn-control" onclick="alternarReproduccion()">Pausa ⏸</button>
+<script>
+const lineas = [
+"Dum dum, mira cómo baila","Mi linda muchachita sobre la arena",
+"El mar tiene que imitarla","Se mueve al mismo ritmo que una sirena",
+"Dum dum, mueve su cintura","La miro emocionado con embeleso",
+"El sol baña su figura","La vuelvo a contemplar, quiero darle un beso",
+"Dum dum, todo se estremece","El cielo se ilumina con su sonrisa",
+"Las olas del mar se mecen","Y baña su cabello la suave brisa",
+"Dum dum, seguirá bailando","Cuando llegue la noche y la luna salga",
+"El sol que se está ocultando","Se queda todo el tiempo para mirarla"
+];
+let i=0;
+let intervalo=null;
+let estaReproduciendo=false;
+const slide=document.getElementById('slide');
+const btnControl=document.getElementById('btn-control');
+function mostrar(){
+slide.style.opacity=0;
+slide.style.transform='scale(0.9)';
+setTimeout(()=>{
+slide.textContent=lineas[i];
+slide.style.opacity=1;
+slide.style.transform='scale(1)';
+i=(i+1)%lineas.length;
+},250);
+}
+function iniciar(event){
+event.stopPropagation();
+document.getElementById('start').style.display='none';
+btnControl.style.display='block';
+reproducir();
+if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen();}
+}
+function reproducir(){
+mostrar();
+intervalo=setInterval(mostrar,2000);
+estaReproduciendo=true;
+btnControl.textContent='Pausa ⏸';
+}
+function pausar(){
+clearInterval(intervalo);
+estaReproduciendo=false;
+btnControl.textContent='Reanudar ▶';
+}
+function alternarReproduccion(){if(estaReproduciendo){pausar();}else{reproducir();}}
+</script>
+</body>
+</html>
